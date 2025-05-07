@@ -4,19 +4,105 @@
  */
 package view;
 
+import dao.UserDAO;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.GroupLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import model.User;
+
 /**
  *
  * @author T
  */
-public class LoginFrm extends javax.swing.JFrame {
-
+public class LoginFrm extends JFrame implements ActionListener{
+    private JLabel lblUsername;
+    private JLabel lblPassword;
+    private JTextField txtUsername;
+    private JPasswordField txtPassword;
+    private JButton btnLogin;
     /**
      * Creates new form LoginFrm
      */
     public LoginFrm() {
         initComponents();
-    }
+        
+        lblUsername = new JLabel("Username:");
+        lblPassword = new JLabel("Password:");
+        txtUsername = new JTextField(20); 
+        txtPassword = new JPasswordField(20); 
+        btnLogin = new JButton("Login");
+        btnLogin.addActionListener(this);
+        GroupLayout layout = new GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
 
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(50) 
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                    .addComponent(lblUsername) 
+                    .addComponent(lblPassword)) 
+                .addGap(20) // Space between label and text field
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                    .addComponent(txtUsername, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE) 
+                    .addComponent(txtPassword, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)) 
+                .addContainerGap(50, Short.MAX_VALUE)) 
+            .addGroup(layout.createSequentialGroup()
+                .addGap(150) 
+                .addComponent(btnLogin) 
+                .addContainerGap(150, Short.MAX_VALUE)) 
+        );
+
+        // Set Vertical Group
+        layout.setVerticalGroup(
+            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(30) 
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblUsername)
+                    .addComponent(txtUsername)) 
+                .addGap(20) 
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblPassword) 
+                    .addComponent(txtPassword)) 
+                .addGap(30) 
+                .addComponent(btnLogin) 
+                .addContainerGap(50, Short.MAX_VALUE))
+        );
+
+        // Set window properties
+        setTitle("Login Form");
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null); 
+        pack(); 
+    }
+    public void actionPerformed(ActionEvent e) {
+        JButton btn =(JButton) e.getSource();
+        if(btn.equals(btnLogin)) btnLogin_actionperformed();
+    }
+    public void btnLogin_actionperformed(){
+        String username = txtUsername.getText();
+        String password = new String(txtPassword.getPassword());
+        UserDAO dao = new UserDAO();
+        User user = new User(username,password);
+        boolean check = dao.checkLogin(user);
+        if(!check){
+            JOptionPane.showMessageDialog(this, "Đăng nhập thất bại!");
+            return;
+        };
+        this.dispose(); 
+        HomeFrm homeFrm = new HomeFrm(user);
+        homeFrm.setVisible(true);
+        
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -26,87 +112,21 @@ public class LoginFrm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        lblUsername = new javax.swing.JLabel();
-        username = new javax.swing.JTextField();
-        lblPassword = new javax.swing.JLabel();
-        password = new javax.swing.JPasswordField();
-        btnLogin = new javax.swing.JButton();
-
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jLabel1.setText("Đăng Nhập");
-
-        lblUsername.setText("username:");
-
-        username.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                usernameActionPerformed(evt);
-            }
-        });
-
-        lblPassword.setText("password:");
-
-        btnLogin.setText("Login");
-        btnLogin.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLoginActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(166, 166, 166)
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(101, 101, 101)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(lblPassword)
-                                .addGap(63, 63, 63)
-                                .addComponent(password))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(lblUsername)
-                                .addGap(61, 61, 61)
-                                .addComponent(username, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(149, 149, 149)
-                        .addComponent(btnLogin)))
-                .addContainerGap(30, Short.MAX_VALUE))
+            .addGap(0, 400, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(31, 31, 31)
-                .addComponent(jLabel1)
-                .addGap(50, 50, 50)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblUsername)
-                    .addComponent(username, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblPassword)
-                    .addComponent(password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(32, 32, 32)
-                .addComponent(btnLogin)
-                .addContainerGap(94, Short.MAX_VALUE))
+            .addGap(0, 300, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void usernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usernameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_usernameActionPerformed
-
-    private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnLoginActionPerformed
 
     /**
      * @param args the command line arguments
@@ -144,11 +164,5 @@ public class LoginFrm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnLogin;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel lblPassword;
-    private javax.swing.JLabel lblUsername;
-    private javax.swing.JPasswordField password;
-    private javax.swing.JTextField username;
     // End of variables declaration//GEN-END:variables
 }

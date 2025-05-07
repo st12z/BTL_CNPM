@@ -18,7 +18,7 @@ public class Dao  {
     public Dao() {
         try {
             // Edit URL , username, password to authenticate with your MS SQL Server
-            String url = "jdbc:sqlserver://localhost:1433;trustServerCertificate=true;encrypt=false;databaseName=TSBD";
+            String url = "jdbc:sqlserver://localhost:1433;trustServerCertificate=true;encrypt=false;databaseName=CNPM";
             String username = "sa";
             String password = "123456789";
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");

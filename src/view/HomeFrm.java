@@ -4,19 +4,74 @@
  */
 package view;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.GroupLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import model.User;
+
 /**
  *
  * @author T
  */
-public class HomeFrm extends javax.swing.JFrame {
-
+public class HomeFrm extends JFrame implements ActionListener{
+    private User user;
+    private JLabel lblUsername;
+    private JButton btnStatisticsDept;
     /**
      * Creates new form HomeFrm
      */
-    public HomeFrm() {
+    public HomeFrm(User user) {
         initComponents();
-    }
+        this.user = user;
+        lblUsername = new JLabel();
+        lblUsername.setText("Welcome "+user.getUsername());
+        btnStatisticsDept = new JButton("Thống kê khách hàng theo dư nợ");
+        btnStatisticsDept.addActionListener(this);
+        GroupLayout layout = new GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(300, Short.MAX_VALUE)  // Makes the label on the top right
+                .addComponent(lblUsername)
+                .addGap(20)
+            )
+            .addGroup(layout.createSequentialGroup()
+                .addGap(150)  // Centers the button horizontally
+                .addComponent(btnStatisticsDept)
+                .addContainerGap(150, Short.MAX_VALUE)
+            )
+        );
 
+        // Vertical Group
+        layout.setVerticalGroup(
+            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(20)
+                .addComponent(lblUsername)  // Label at the top right
+                .addGap(100)  // Space between label and button
+                .addComponent(btnStatisticsDept)   // Button centered vertically
+                .addContainerGap(150, Short.MAX_VALUE)
+            )
+        );
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        pack();
+        
+    }
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        JButton btn = (JButton) e.getSource();
+        if(btn.equals(btnStatisticsDept)){
+            btnStatisticsDept_actionperformed();
+        }
+    }
+    public void btnStatisticsDept_actionperformed(){
+        
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -68,14 +123,11 @@ public class HomeFrm extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(HomeFrm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new HomeFrm().setVisible(true);
-            }
-        });
+        
     }
+
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
