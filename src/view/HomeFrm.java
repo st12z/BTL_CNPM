@@ -4,6 +4,7 @@
  */
 package view;
 
+import dao.ContractStatisticsDAO;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.GroupLayout;
@@ -11,7 +12,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import model.User;
-
+import model.ContractStatistics;
+import java.util.List;
 /**
  *
  * @author T
@@ -70,7 +72,12 @@ public class HomeFrm extends JFrame implements ActionListener{
         }
     }
     public void btnStatisticsDept_actionperformed(){
+        ContractStatisticsDAO dao = new ContractStatisticsDAO();
+        List<ContractStatistics> result = dao.getListCustomerByDept();
+        this.dispose();
         
+        StatisticsCustomerFrm customerFrm = new StatisticsCustomerFrm(result);
+        customerFrm.setVisible(true);
     }
     /**
      * This method is called from within the constructor to initialize the form.

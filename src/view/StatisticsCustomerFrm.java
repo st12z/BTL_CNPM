@@ -4,17 +4,140 @@
  */
 package view;
 
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
+import java.util.List;
+import javax.swing.BorderFactory;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import model.ContractStatistics;
+import model.User;
+
 /**
  *
  * @author T
  */
 public class StatisticsCustomerFrm extends javax.swing.JFrame {
 
-    /**
-     * Creates new form StatisticsCustomerFrm
-     */
-    public StatisticsCustomerFrm() {
-        initComponents();
+    private List<ContractStatistics> result;
+    private JTable table;
+    private JLabel lblCountCustomer;
+
+    public StatisticsCustomerFrm(List<ContractStatistics> result) {
+        this.result = result;
+        setTitle("Thống kê dư nợ khách hàng");
+        setSize(800, 400);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        String[] columnNames = {"ID", "Tên", "Số điện thoại", "Tổng dư nợ quá hạn", "Tổng dư nợ còn", "Hành động"};
+        DefaultTableModel model = new DefaultTableModel(null, columnNames) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return column == 5; // chỉ cột Action có thể tương tác
+            }
+        };
+
+        DecimalFormat df = new DecimalFormat("#,###.##");
+        for (ContractStatistics c : result) {
+            model.addRow(new Object[]{
+                c.getId(),
+                c.getName(),
+                c.getPhoneNumber(),
+                df.format(c.getOverdueBalance()) + " VNĐ",
+                df.format(c.getOutstandingBalance()) + " VNĐ",
+                "Xem chi tiết"
+            });
+        }
+
+        table = new JTable(model);
+        table.getColumn("Hành động").setCellRenderer(new ButtonRenderer());
+        table.getColumn("Hành động").setCellEditor(new ButtonEditor(new JCheckBox(), result));
+
+        JScrollPane scrollPane = new JScrollPane(table);
+
+        // Tạo JLabel hiển thị tổng số khách hàng
+        lblCountCustomer = new JLabel("Tổng số khách hàng đã vay: " + result.size());
+
+        // Tạo panel chứa label, canh phải + padding
+        JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        bottomPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // padding
+        bottomPanel.add(lblCountCustomer);
+
+        // Dùng BorderLayout để đặt scrollPane ở CENTER, label ở SOUTH
+        setLayout(new BorderLayout());
+        add(scrollPane, BorderLayout.CENTER);
+        add(bottomPanel, BorderLayout.SOUTH);
+
+        setVisible(true);
+    }
+
+    // Renderer cho nút
+    class ButtonRenderer extends JButton implements TableCellRenderer {
+
+        public ButtonRenderer() {
+            setText("Xem chi tiết");
+        }
+
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value,
+                boolean isSelected, boolean hasFocus, int row, int column) {
+            return this;
+        }
+    }
+
+    // Editor xử lý sự kiện click
+    class ButtonEditor extends DefaultCellEditor implements ActionListener {
+
+        private JButton btnViewDetail;
+        private int selectedRow;
+        private List<ContractStatistics> list;
+
+        public ButtonEditor(JCheckBox checkBox, List<ContractStatistics> list) {
+            super(checkBox);
+            this.list = list;
+            btnViewDetail = new JButton("Xem chi tiết");
+            btnViewDetail.addActionListener(this);
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            JButton btn = (JButton) e.getSource();
+            if (btn.equals(btnViewDetail)) {
+                btnViewDetail_actionperformed();
+            }
+        }
+
+        @Override
+        public Component getTableCellEditorComponent(JTable table, Object value,
+                boolean isSelected, int row, int column) {
+            selectedRow = row;
+            return btnViewDetail;
+        }
+
+        public void btnViewDetail_actionperformed() {
+            int customerId = list.get(selectedRow).getId();
+            System.out.println("get contract by customerId:" + customerId);
+        }
+
+        @Override
+        public Object getCellEditorValue() {
+            return "Xem chi tiết";
+        }
+
     }
 
     /**
@@ -69,12 +192,6 @@ public class StatisticsCustomerFrm extends javax.swing.JFrame {
         }
         //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new StatisticsCustomerFrm().setVisible(true);
-            }
-        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
