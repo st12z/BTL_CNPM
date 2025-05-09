@@ -8,7 +8,7 @@ package model;
  *
  * @author T
  */
-public class ContractStatistics extends Customer{
+public class ContractStatistics extends Customer implements Comparable<ContractStatistics>{
    private float outstandingBalance;
    private float overdueBalance;
 
@@ -47,6 +47,11 @@ public class ContractStatistics extends Customer{
             outstandingBalance,
             overdueBalance
         };
+    }
+
+    @Override
+    public int compareTo(ContractStatistics o) {
+        return Float.compare(o.getOutstandingBalance(), this.getOutstandingBalance());
     }
    
 }

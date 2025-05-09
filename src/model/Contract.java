@@ -10,7 +10,7 @@ import java.sql.Date;
  *
  * @author T
  */
-public class Contract {
+public class Contract implements  Comparable<Contract>{
 
     private int id;
     private Date signDate;
@@ -103,5 +103,11 @@ public class Contract {
             customerId,
             userId,
             businessPartnerId,};
+    }
+
+    @Override
+    public int compareTo(Contract o) {
+        if(this.getSignDate().before(o.getSignDate())) return -1;
+        else return -1;
     }
 }

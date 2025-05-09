@@ -14,14 +14,19 @@ import javax.swing.JLabel;
 import model.User;
 import model.ContractStatistics;
 import java.util.List;
+import javax.swing.LayoutStyle;
+
 /**
  *
  * @author T
  */
-public class HomeFrm extends JFrame implements ActionListener{
+public class HomeFrm extends JFrame implements ActionListener {
+
     private User user;
     private JLabel lblUsername;
     private JButton btnStatisticsDept;
+    private JButton btnBack;
+
     /**
      * Creates new form HomeFrm
      */
@@ -29,56 +34,71 @@ public class HomeFrm extends JFrame implements ActionListener{
         initComponents();
         this.user = user;
         lblUsername = new JLabel();
-        lblUsername.setText("Welcome "+user.getUsername());
+        lblUsername.setText("Welcome " + user.getUsername());
         btnStatisticsDept = new JButton("Thống kê khách hàng theo dư nợ");
+        btnBack = new JButton("Quay lại");
         btnStatisticsDept.addActionListener(this);
+        btnBack.addActionListener(this);
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap(300, Short.MAX_VALUE)  // Makes the label on the top right
-                .addComponent(lblUsername)
-                .addGap(20)
-            )
-            .addGroup(layout.createSequentialGroup()
-                .addGap(150)  // Centers the button horizontally
-                .addComponent(btnStatisticsDept)
-                .addContainerGap(150, Short.MAX_VALUE)
-            )
+                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addGap(20)
+                                .addComponent(btnBack) // góc trái
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 200, Short.MAX_VALUE)
+                                .addComponent(lblUsername) // góc phải
+                                .addGap(20)
+                        )
+                        .addGroup(layout.createSequentialGroup()
+                                .addGap(150)
+                                .addComponent(btnStatisticsDept)
+                                .addContainerGap(150, Short.MAX_VALUE)
+                        )
         );
 
-        // Vertical Group
         layout.setVerticalGroup(
-            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(20)
-                .addComponent(lblUsername)  // Label at the top right
-                .addGap(100)  // Space between label and button
-                .addComponent(btnStatisticsDept)   // Button centered vertically
-                .addContainerGap(150, Short.MAX_VALUE)
-            )
+                layout.createSequentialGroup()
+                        .addGap(20)
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                .addComponent(btnBack)
+                                .addComponent(lblUsername)
+                        )
+                        .addGap(100)
+                        .addComponent(btnStatisticsDept)
+                        .addContainerGap(150, Short.MAX_VALUE)
         );
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         pack();
-        
+
     }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         JButton btn = (JButton) e.getSource();
-        if(btn.equals(btnStatisticsDept)){
+        if (btn.equals(btnStatisticsDept)) {
             btnStatisticsDept_actionperformed();
+        } else if (btn.equals(btnBack)) {
+            btnBack_actionperformed();
         }
     }
-    public void btnStatisticsDept_actionperformed(){
+
+    public void btnStatisticsDept_actionperformed() {
         ContractStatisticsDAO dao = new ContractStatisticsDAO();
         List<ContractStatistics> result = dao.getListCustomerByDept();
         this.dispose();
-        
-        StatisticsCustomerFrm customerFrm = new StatisticsCustomerFrm(result);
+
+        StatisticsCustomerFrm customerFrm = new StatisticsCustomerFrm(result,user);
         customerFrm.setVisible(true);
     }
+
+    public void btnBack_actionperformed() {
+        this.dispose();
+        new LoginFrm().setVisible(true);
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -131,10 +151,9 @@ public class HomeFrm extends JFrame implements ActionListener{
         }
         //</editor-fold>
         /* Create and display the form */
-        
+
     }
 
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

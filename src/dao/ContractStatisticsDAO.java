@@ -7,6 +7,7 @@ package dao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import model.*;
 import model.Customer;
@@ -88,6 +89,7 @@ public class ContractStatisticsDAO extends Dao {
             }
 
             System.out.println(result);
+            Collections.sort(result);
             return result;
         } catch (Exception e) {
             e.printStackTrace();
