@@ -48,11 +48,11 @@ public class StatisticsDetailContractFrm extends javax.swing.JFrame implements A
     private JTable tblPayment;
     private JButton btnBack;
     private JLabel lblUsername;
-    private User u;
+    private User user;
     private Customer customer;
-    public StatisticsDetailContractFrm(Contract contract, User u) {
+    public StatisticsDetailContractFrm(Contract contract, User user) {
         DecimalFormat df = new DecimalFormat("#,###.##");
-        this.u = u;
+        this.user = user;
         int contractId = contract.getId();
         int customerId = contract.getCustomerId();
         CustomerDAO customerDAO = new CustomerDAO();
@@ -72,7 +72,7 @@ public class StatisticsDetailContractFrm extends javax.swing.JFrame implements A
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.setBorder(new EmptyBorder(15, 15, 15, 15));
 
-        JLabel lblUsername = new JLabel("Welcome " + u.getUsername(), SwingConstants.RIGHT);
+        JLabel lblUsername = new JLabel("Welcome " + user.getUsername(), SwingConstants.RIGHT);
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         topPanel.add(lblUsername);
         mainPanel.add(topPanel);
@@ -133,7 +133,7 @@ public class StatisticsDetailContractFrm extends javax.swing.JFrame implements A
 
     public void btnBack_actionperformed() {
         this.dispose();
-        new StatisticsDetailCustomerFrm(u, customer).setVisible(true);
+        new StatisticsDetailCustomerFrm(user, customer).setVisible(true);
     }
 
     private void addSection(JPanel panel, String title, JTable table) {

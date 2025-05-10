@@ -43,10 +43,10 @@ public class StatisticsCustomerFrm extends javax.swing.JFrame implements ActionL
     private User user;
     private JLabel lblUsername;
     private JTable tblSummary;
-    public StatisticsCustomerFrm(User u) {
+    public StatisticsCustomerFrm(User user) {
         ContractStatisticsDAO dao = new ContractStatisticsDAO();
         List<ContractStatistics>result = dao.getListCustomerByDept();
-        this.user = u;
+        this.user = user;
         setTitle("Thống kê dư nợ khách hàng");
         setSize(800, 400);
         setLocationRelativeTo(null);

@@ -4,15 +4,10 @@
  */
 package view;
 
-import dao.BusinessPartnerDAO;
 import dao.ContractDAO;
-import dao.ContractStatisticsDAO;
-import dao.CustomerDAO;
-import dao.ItemContractDAO;
 import dao.PaymentDAO;
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
@@ -31,12 +26,10 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import model.Contract;
-import model.ContractStatistics;
 import model.Payment;
 import model.User;
 import model.Customer;
-import model.ItemContract;
-import model.BusinessPartner;
+
 /**
  *
  * @author T
@@ -52,11 +45,11 @@ public class StatisticsDetailCustomerFrm extends javax.swing.JFrame implements A
     /**
      * Creates new form StatisticsDetailCustomerFrm
      */
-    public StatisticsDetailCustomerFrm( User u, Customer customer) {
+    public StatisticsDetailCustomerFrm( User user, Customer customer) {
         int customerId=customer.getId();
         ContractDAO contractDAO = new ContractDAO();
         List<Contract> result = contractDAO.getListContract(customerId);
-        this.user = u;
+        this.user = user;
         setTitle("Thống kê khách hàng với id: " + customerId);
         setSize(900, 600);
         setLocationRelativeTo(null);
@@ -176,8 +169,6 @@ public class StatisticsDetailCustomerFrm extends javax.swing.JFrame implements A
 
     public void btnBack_actionperformed() {
         this.dispose();
-        ContractStatisticsDAO dao = new ContractStatisticsDAO();
-        List<ContractStatistics>contractStatisticses = dao.getListCustomerByDept();
         new StatisticsCustomerFrm( user).setVisible(true);
     }
 
@@ -228,7 +219,6 @@ public class StatisticsDetailCustomerFrm extends javax.swing.JFrame implements A
 
         public void btnViewDetail_actionperformed() {
             Contract contract = list.get(selectedRow);
-            
             parent.dispose();
             new StatisticsDetailContractFrm(contract,user).setVisible(true);
         }
