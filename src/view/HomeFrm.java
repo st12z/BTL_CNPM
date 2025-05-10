@@ -86,11 +86,8 @@ public class HomeFrm extends JFrame implements ActionListener {
     }
 
     public void btnStatisticsDept_actionperformed() {
-        ContractStatisticsDAO dao = new ContractStatisticsDAO();
-        List<ContractStatistics> result = dao.getListCustomerByDept();
         this.dispose();
-
-        StatisticsCustomerFrm customerFrm = new StatisticsCustomerFrm(result,user);
+        StatisticsCustomerFrm customerFrm = new StatisticsCustomerFrm(user);
         customerFrm.setVisible(true);
     }
 

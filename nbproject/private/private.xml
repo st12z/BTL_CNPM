@@ -9,14 +9,19 @@
             <file>file:/C:/Users/T/Desktop/BTL_CNPM/src/view/LoginFrm.java</file>
             <file>file:/C:/Users/T/Desktop/BTL_CNPM/src/model/ContractStatistics.java</file>
             <file>file:/C:/Users/T/Desktop/BTL_CNPM/src/model/Payment.java</file>
+            <file>file:/C:/Users/T/Desktop/BTL_CNPM/src/dao/ItemDAO.java</file>
             <file>file:/C:/Users/T/Desktop/BTL_CNPM/src/view/HomeFrm.java</file>
+            <file>file:/C:/Users/T/Desktop/BTL_CNPM/src/dao/UserDAO.java</file>
             <file>file:/C:/Users/T/Desktop/BTL_CNPM/src/view/StatisticsCustomerFrm.java</file>
             <file>file:/C:/Users/T/Desktop/BTL_CNPM/src/view/StatisticsDetailCustomerFrm.java</file>
             <file>file:/C:/Users/T/Desktop/BTL_CNPM/src/dao/ContractDAO.java</file>
+            <file>file:/C:/Users/T/Desktop/BTL_CNPM/src/model/ItemContract.java</file>
             <file>file:/C:/Users/T/Desktop/BTL_CNPM/src/dao/ItemContractDAO.java</file>
             <file>file:/C:/Users/T/Desktop/BTL_CNPM/src/dao/ContractStatisticsDAO.java</file>
             <file>file:/C:/Users/T/Desktop/BTL_CNPM/src/dao/CustomerDAO.java</file>
+            <file>file:/C:/Users/T/Desktop/BTL_CNPM/src/model/Customer.java</file>
             <file>file:/C:/Users/T/Desktop/BTL_CNPM/src/model/Contract.java</file>
+            <file>file:/C:/Users/T/Desktop/BTL_CNPM/src/model/Item.java</file>
             <file>file:/C:/Users/T/Desktop/BTL_CNPM/src/dao/PaymentDAO.java</file>
             <file>file:/C:/Users/T/Desktop/BTL_CNPM/src/view/StatisticsDetailContractFrm.java</file>
         </group>

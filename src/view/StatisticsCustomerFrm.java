@@ -5,6 +5,7 @@
 package view;
 
 import dao.ContractDAO;
+import dao.ContractStatisticsDAO;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.FlowLayout;
@@ -30,21 +31,21 @@ import javax.swing.table.TableCellRenderer;
 import model.ContractStatistics;
 import model.User;
 import model.Contract;
+import model.Customer;
 
 /**
  *
  * @author T
  */
 public class StatisticsCustomerFrm extends javax.swing.JFrame implements ActionListener {
-
-    private List<ContractStatistics> result;
     private JTable tblResult;
     private JButton btnBack;
     private User user;
     private JLabel lblUsername;
-
-    public StatisticsCustomerFrm(List<ContractStatistics> result, User u) {
-        this.result = result;
+    private JTable tblSummary;
+    public StatisticsCustomerFrm(User u) {
+        ContractStatisticsDAO dao = new ContractStatisticsDAO();
+        List<ContractStatistics>result = dao.getListCustomerByDept();
         this.user = u;
         setTitle("Thống kê dư nợ khách hàng");
         setSize(800, 400);
@@ -72,10 +73,10 @@ public class StatisticsCustomerFrm extends javax.swing.JFrame implements ActionL
                 return false;
             }
         };
-        JTable summaryTable = new JTable(model1);
-        summaryTable.setEnabled(false);
-        summaryTable.setRowHeight(30);
-        JScrollPane summaryScroll = new JScrollPane(summaryTable);
+        tblSummary = new JTable(model1);
+        tblSummary.setEnabled(false);
+        tblSummary.setRowHeight(30);
+        JScrollPane summaryScroll = new JScrollPane(tblSummary);
         summaryScroll.setBorder(BorderFactory.createEmptyBorder(10, 20, 0, 20));
 
         // Tạo label tên người dùng
@@ -193,11 +194,9 @@ public class StatisticsCustomerFrm extends javax.swing.JFrame implements ActionL
         }
 
         public void btnViewDetail_actionperformed() {
-            int customerId = list.get(selectedRow).getId();
-            ContractDAO dao = new ContractDAO();
-            List<Contract> contracts = dao.getListContract(customerId);
+            Customer customer = list.get(selectedRow);
             parent.dispose();
-            StatisticsDetailCustomerFrm detailCustomerFrm = new StatisticsDetailCustomerFrm(result, contracts, user, customerId);
+            StatisticsDetailCustomerFrm detailCustomerFrm = new StatisticsDetailCustomerFrm( user, customer);
             detailCustomerFrm.setVisible(true);
 
         }

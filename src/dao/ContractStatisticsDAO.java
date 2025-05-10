@@ -21,6 +21,8 @@ public class ContractStatisticsDAO extends Dao {
 
     public List<ContractStatistics> getListCustomerByDept() {
         String sql = "SELECT * from tblCustomer ";
+        ContractDAO contractDAO = new ContractDAO();
+        PaymentDAO paymentDAO = new PaymentDAO();
         try {
             PreparedStatement st = con.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
@@ -40,49 +42,24 @@ public class ContractStatisticsDAO extends Dao {
                 contractStatistics.setId(customer.getId());
                 contractStatistics.setName(customer.getName());
                 contractStatistics.setPhoneNumber(customer.getPhoneNumber());
-                sql = "SELECT * from tblContract where tblCustomerId=?";
-                List<Contract> listContracts = new ArrayList<>();
-                st = con.prepareStatement(sql);
-                st.setInt(1, customer.getId());
-                rs = st.executeQuery();
-
-                while (rs.next()) {
-                    listContracts.add(new Contract(rs.getInt("id"), rs.getDate("signDate"),
-                            rs.getFloat("totalLoan"), rs.getDate("loanTerm"),
-                            rs.getInt("tblCustomerId"), rs.getInt("tblUserId"), rs.getInt("tblBusinessPartnerId")));
-                }
-                System.out.println("CustomerId: " + customer.getId());
-                System.out.println(listContracts);
+                
+                List<Contract> listContracts = contractDAO.getListContract(customer.getId());
+                
 
                 for (Contract contract : listContracts) {
-                    List<Payment> listPayments = new ArrayList<>();
-                    sql = "SELECT * from tblPayment where tblContractId=?";
-                    st = con.prepareStatement(sql);
-                    st.setInt(1, contract.getId());
-                    rs = st.executeQuery();
-
-                    while (rs.next()) {
-                        listPayments.add(new Payment(rs.getInt("id"), rs.getDate("paymentDate"),
-                                rs.getFloat("paymentAmount"), rs.getFloat("remainingDebt"),
-                                rs.getInt("tblContractId")));
-                    }
-                    System.out.println("contractId: " + contract.getId());
-                    System.out.println(listPayments);
+                    List<Payment> listPayments = paymentDAO.getListPayment(contract.getId());
+                    
 
                     outstandingBalance += listPayments.get(listPayments.size() - 1).getRemainingDept();
                     for (int i = 0; i < listPayments.size(); i++) {
                         if (i >= 1 && listPayments.get(i).getPaymentAmount() == 0) {
                             Payment paymentBefore = listPayments.get(i - 1);
                             Payment paymentCurrent = listPayments.get(i);
-                            System.out.println("paymentBefore:" + paymentBefore);
-                            System.out.println("paymentCurrent:" + paymentCurrent);
-
                             overdueBalance += paymentCurrent.getRemainingDept() - paymentBefore.getRemainingDept();
 
                         }
                     }
                 }
-                System.out.println("-----------------");
                 contractStatistics.setOutstandingBalance(outstandingBalance);
                 contractStatistics.setOverdueBalance(overdueBalance);
                 result.add(contractStatistics);

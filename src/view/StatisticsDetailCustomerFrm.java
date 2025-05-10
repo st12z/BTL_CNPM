@@ -4,7 +4,11 @@
  */
 package view;
 
+import dao.BusinessPartnerDAO;
 import dao.ContractDAO;
+import dao.ContractStatisticsDAO;
+import dao.CustomerDAO;
+import dao.ItemContractDAO;
 import dao.PaymentDAO;
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -30,27 +34,29 @@ import model.Contract;
 import model.ContractStatistics;
 import model.Payment;
 import model.User;
-
+import model.Customer;
+import model.ItemContract;
+import model.BusinessPartner;
 /**
  *
  * @author T
  */
 public class StatisticsDetailCustomerFrm extends javax.swing.JFrame implements ActionListener {
 
-    private List<Contract> result;
     private JTable tblResult;
     private User user;
     private JLabel lblUsername;
     private JButton btnBack;
-    private List<ContractStatistics> contractStatisticses;
-
+    private JTable  tblSummary ;
+    private Customer customer;
     /**
      * Creates new form StatisticsDetailCustomerFrm
      */
-    public StatisticsDetailCustomerFrm(List<ContractStatistics> contractStatisticses, List<Contract> result, User u, int customerId) {
-        this.result = result;
+    public StatisticsDetailCustomerFrm( User u, Customer customer) {
+        int customerId=customer.getId();
+        ContractDAO contractDAO = new ContractDAO();
+        List<Contract> result = contractDAO.getListContract(customerId);
         this.user = u;
-        this.contractStatisticses = contractStatisticses;
         setTitle("Thống kê khách hàng với id: " + customerId);
         setSize(900, 600);
         setLocationRelativeTo(null);
@@ -94,10 +100,10 @@ public class StatisticsDetailCustomerFrm extends javax.swing.JFrame implements A
                 return false;
             }
         };
-        JTable summaryTable = new JTable(model1);
-        summaryTable.setEnabled(false);
-        summaryTable.setRowHeight(30);
-        JScrollPane summaryScroll = new JScrollPane(summaryTable);
+        tblSummary  = new JTable(model1);
+        tblSummary.setEnabled(false);
+        tblSummary.setRowHeight(30);
+        JScrollPane summaryScroll = new JScrollPane(tblSummary);
         summaryScroll.setBorder(BorderFactory.createEmptyBorder(10, 20, 0, 20));
 
         // Label user và nút quay lại
@@ -170,7 +176,9 @@ public class StatisticsDetailCustomerFrm extends javax.swing.JFrame implements A
 
     public void btnBack_actionperformed() {
         this.dispose();
-        new StatisticsCustomerFrm(contractStatisticses, user).setVisible(true);
+        ContractStatisticsDAO dao = new ContractStatisticsDAO();
+        List<ContractStatistics>contractStatisticses = dao.getListCustomerByDept();
+        new StatisticsCustomerFrm( user).setVisible(true);
     }
 
     // Renderer cho nút
@@ -219,8 +227,10 @@ public class StatisticsDetailCustomerFrm extends javax.swing.JFrame implements A
         }
 
         public void btnViewDetail_actionperformed() {
-            int contractId = list.get(selectedRow).getId();
-            System.out.println(contractId);
+            Contract contract = list.get(selectedRow);
+            
+            parent.dispose();
+            new StatisticsDetailContractFrm(contract,user).setVisible(true);
         }
 
         @Override

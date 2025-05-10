@@ -3,25 +3,27 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package dao;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import model.BusinessPartner;
+import model.Item;
+
 /**
  *
  * @author T
  */
-public class BusinessPartnerDAO extends Dao{
-    public BusinessPartner getBusinessPartner(int businessPartnerId){
-        String sql = "SELECT * FROM tblBusinessPartner where id=?";
+public class ItemDAO extends Dao{
+    public Item getItem(int itemId){
+        String sql = "SELECT * FROM tblItem where id=?";
         try{
             PreparedStatement st = con.prepareStatement(sql);
-            st.setInt(1, businessPartnerId);
+            st.setInt(1, itemId);
             ResultSet rs = st.executeQuery();
             if(rs.next()){
-                BusinessPartner b = new BusinessPartner(rs.getInt("id"),rs.getNString("name"),
-                    rs.getString("address"),rs.getInt("tblCompanyId")
+                Item i = new Item(rs.getInt("id"),rs.getFloat("unitPrice"),
+                    rs.getInt("tblProductId"),rs.getInt("tblBusinessPartnerId")
                 );
-                return b;
+                return i;
             }
             
         }catch(Exception e){
